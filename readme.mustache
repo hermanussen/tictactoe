@@ -1,0 +1,22 @@
+# Tic Tac Toe
+
+At this point in the game, there are {{ gamesTotal }} possible outcomes.
+
+Of these outcomes, the following is true:
+- {{ gamesWonXPerc }}% chance of X winning ({{ gamesWonX }} games)
+- {{ gamesWonOPerc }}% chance of O winning ({{ gamesWonO }} games)
+- {{ gamesDrawPerc }}% chance of a draw ({{ gamesDraw }} games)
+
+{{#winner}}{{ winner }} won the game!
+
+Replay:
+
+![]({{{ replayImage }}})
+{{/winner}}
+{{^winner}}It is {{ playerTurn }}'s turn. What is your next move?
+
+{{#squares}}
+{{#.}}{{#link}}[![](/img/{{ fill }}.png)]({{{ link }}}){{/link}}{{^link}}![](/img/{{ fill }}.png){{/link}}{{/.}}
+
+{{/squares}}
+{{/winner}}

@@ -1,6 +1,7 @@
 const GIFEncoder = require('gifencoder');
 const { createCanvas } = require('canvas');
 const fs = require('fs');
+const mustache = require('mustache');
 const width = 100;
 const height = 100;
 
@@ -18,6 +19,9 @@ const winningLines = [
         [3, 5, 7]
     ];
 
+// Load template for rendering readme files
+const template = fs.readFileSync('readme.mustache', 'utf8');
+
 let determineWinner = function(game) {
     if(game.code.length < 3) {
         return;
@@ -32,18 +36,13 @@ let determineWinner = function(game) {
 
     if(gameFinished) {
         game.winner = playerMove;
-        //console.log(`Game ${game.code.join('')} won by ${game.winner}`);
+        //console.log(`Game ${game.codeStr} won by ${game.winner}`);
     }
 };
 
 let games = [];
 
 let calculateNextMoves = function(game) {
-    // Temporary: limit number of games so the build is not too long
-    // if(games.length >= 100) {
-    //     return;
-    // }
-
     for(let m1 = 1; m1 <= 9; m1++) {
         if(game.code.filter(f => f === m1).length > 0) {
             // if the move has already been played, skip this
@@ -52,6 +51,7 @@ let calculateNextMoves = function(game) {
 
         let newGame = JSON.parse(JSON.stringify(game));
         newGame.code.push(m1);
+        newGame.codeStr = newGame.code.join('');
         determineWinner(newGame);
         if (typeof newGame.winner !== 'undefined' || newGame.code.length >= 9) {
             games.push(newGame);
@@ -61,7 +61,7 @@ let calculateNextMoves = function(game) {
     }
 }
 
-let game = { code: [] };
+let game = { code: [], codeStr: '' };
 calculateNextMoves(game);
 
 let renderGameGif = function (game) {
@@ -156,8 +156,75 @@ const gamesDraw = gamesTotal - gamesWonX - gamesWonO;
 console.log(`Total games: ${gamesTotal}. Won by X: ${gamesWonX} (${Math.round(gamesWonX / gamesTotal * 100)}%). Won by O: ${gamesWonO} (${Math.round(gamesWonO / gamesTotal * 100)}%). Games drawn: ${gamesDraw} (${Math.round(gamesDraw / gamesTotal * 100)}%)`);
 
 for(let i = 0; i < gamesTotal; i++) {
-    if(i % 10 === 0) {
-        console.log(`Rendering gif for game ${i + 1} of ${gamesTotal}... ${games[i].code.join('')}`);
+    if(i % 100 === 0) {
+        console.log(`Rendering gif for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
     }
     renderGameGif(games[i]);
+}
+
+const renderedReadmeCodes = [];
+
+let renderReadme = function(game) {
+    for(let j = 0; j <= game.code.length; j++) {
+        let gameCodeArr = game.code.slice(0, j);
+        let gameCode = gameCodeArr.join('');
+        if(renderedReadmeCodes.filter(f => f === gameCode).length === 0) {
+            renderedReadmeCodes.push(gameCode);
+
+            const readmePath = `games/${gameCodeArr.join('/')}`;
+            if (!fs.existsSync(readmePath)){
+                fs.mkdirSync(readmePath, { recursive: true });
+            }
+
+            let outputFileName = `${readmePath}/README.md`;
+
+            let squares = [
+                    [ { fill: '_', link: `/${readmePath}/1/README.md` }, { fill: '_', link: `/${readmePath}/2/README.md` }, { fill: '_', link: `/${readmePath}/3/README.md` } ],
+                    [ { fill: '_', link: `/${readmePath}/4/README.md` }, { fill: '_', link: `/${readmePath}/5/README.md` }, { fill: '_', link: `/${readmePath}/6/README.md` } ],
+                    [ { fill: '_', link: `/${readmePath}/7/README.md` }, { fill: '_', link: `/${readmePath}/8/README.md` }, { fill: '_', link: `/${readmePath}/9/README.md` } ]
+                ];
+            for(let gc = 0; gc < gameCodeArr.length; gc++) {        
+                let dx = (gameCodeArr[gc] - 1) % 3;
+                let dy = Math.floor((gameCodeArr[gc] - 1) / 3);
+                squares[dy][dx].fill = (gc % 2 == 0) ? 'x' : 'o';
+                squares[dy][dx].link = null;
+            }
+
+            const gamesFromHere = games.filter(g => g.codeStr.startsWith(gameCode));
+            const gamesFromHereTotal = gamesFromHere.length;
+            const gamesFromHereWonX = gamesFromHere.filter(g => g.winner === 1).length;
+            const gamesFromHereWonO = gamesFromHere.filter(g => g.winner === 0).length;
+            const gamesFromHereDraw = gamesFromHereTotal - gamesFromHereWonX - gamesFromHereWonO;
+
+            const winner = j === game.code.length ? (gameCodeArr.length % 2 == 0 ? 'O' : 'X') : undefined;
+
+            let model = {
+                    gamesTotal: gamesFromHereTotal,
+                    gamesWonX: gamesFromHereWonX,
+                    gamesWonXPerc: Math.round(gamesFromHereWonX / gamesFromHereTotal * 100),
+                    gamesWonO: gamesFromHereWonO,
+                    gamesWonOPerc: Math.round(gamesFromHereWonO / gamesFromHereTotal * 100),
+                    gamesDraw: gamesFromHereDraw,
+                    gamesDrawPerc: Math.round(gamesFromHereDraw / gamesFromHereTotal * 100),
+                    playerTurn: gameCodeArr.length % 2 == 0 ? 'X' : 'O',
+                    winner: winner,
+                    squares: squares
+                };
+
+            if(model.winner) {
+                model.replayImage = `/games/${gameCodeArr.join('/')}/game.gif`;
+            }
+
+            const rendered = mustache.render(template, model);
+
+            fs.writeFileSync(outputFileName, rendered);
+        }
+    }
+}
+
+for(let i = 0; i < gamesTotal; i++) {
+    if(i % 100 === 0) {
+        console.log(`Rendering readme for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
+    }
+    renderReadme(games[i]);
 }
