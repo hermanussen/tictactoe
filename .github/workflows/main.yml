@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+ 
+    # Setup Node.js
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.1.0
+      with:
+        # Version Spec of the version to use.  Examples: 12.x, 10.15.1, >=10.15.0
+        node-version: 14.4.0
+
+    - name: Install modules
+      run: npm install
+
+    - name: Run app
+      run: node app.js
+
+    - name: Commit changes
+      uses: EndBug/add-and-commit@v4
+      with:
+        author_name: Github action (Robin Hermanussen)
+        author_email: hermanussen@hotmail.com
+        message: "Updated automatically from GitHub actions"
+        add: "games/\\*.* README.md"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
