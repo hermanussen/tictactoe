@@ -33,6 +33,6 @@ jobs:
         author_name: Github action (Robin Hermanussen)
         author_email: hermanussen@hotmail.com
         message: "Updated automatically from GitHub actions"
-        add: "games/\\*.* README.md"
+        add: "."
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
