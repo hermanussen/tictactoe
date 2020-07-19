@@ -40,9 +40,9 @@ let games = [];
 
 let calculateNextMoves = function(game) {
     // Temporary: limit number of games so the build is not too long
-    if(games.length >= 100) {
-        return;
-    }
+    // if(games.length >= 100) {
+    //     return;
+    // }
 
     for(let m1 = 1; m1 <= 9; m1++) {
         if(game.code.filter(f => f === m1).length > 0) {
