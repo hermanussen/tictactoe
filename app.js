@@ -176,7 +176,7 @@ let renderReadme = function(game) {
                 fs.mkdirSync(readmePath, { recursive: true });
             }
 
-            let outputFileName = `${readmePath}/README.md`;
+            let outputFileName = `${readmePath}/README.md`.replace('//', '/');
 
             let squares = [
                     [ { fill: '_', link: `/${readmePath}/1/README.md` }, { fill: '_', link: `/${readmePath}/2/README.md` }, { fill: '_', link: `/${readmePath}/3/README.md` } ],
