@@ -1,6 +1,6 @@
 const GIFEncoder = require('gifencoder');
 const { createCanvas } = require('canvas');
-const fs = require('fs');
+const fs = require('graceful-fs');
 const mustache = require('mustache');
 const width = 100;
 const height = 100;
@@ -75,7 +75,9 @@ let renderGameGif = function (game) {
     }
 
     let outputFileName = `${gamePath}/game.gif`;
-    encoder.createReadStream().pipe(fs.createWriteStream(outputFileName));
+    let readStream = encoder.createReadStream();
+    let writeStream = fs.createWriteStream(outputFileName);
+    readStream.pipe(writeStream);
 
     encoder.start();
     encoder.setRepeat(0);   // 0 for repeat, -1 for no-repeat
@@ -146,6 +148,10 @@ let renderGameGif = function (game) {
     encoder.addFrame(ctx);
 
     encoder.finish();
+    for(let rs in encoder.readStreams) {
+        rs.close();
+    }
+    writeStream.close();
 };
 
 const gamesTotal = games.length;
