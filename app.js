@@ -163,9 +163,9 @@ console.log(`Total games: ${gamesTotal}. Won by X: ${gamesWonX} (${Math.round(ga
 
 for(let i = 0; i < gamesTotal; i++) {
     if(i % 100 === 0) {
-        console.log(`Rendering gif for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
+        //console.log(`Rendering gif for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
     }
-    renderGameGif(games[i]);
+    //renderGameGif(games[i]);
 }
 
 const renderedReadmeCodes = [];
