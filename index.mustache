@@ -1,0 +1,24 @@
+<h1>Tic Tac Toe</h1>
+
+<p>At this point in the game, there are {{ gamesTotal }} possible outcomes.</p>
+
+<p>Of these outcomes, the following is true:</p>
+<ul>
+<li>{{ gamesWonXPerc }}% chance of X winning ({{ gamesWonX }} games)</li>
+<li>{{ gamesWonOPerc }}% chance of O winning ({{ gamesWonO }} games)</li>
+<li>{{ gamesDrawPerc }}% chance of a draw ({{ gamesDraw }} games)</li>
+</ul>
+
+{{#winner}}<p>{{ winner }} won the game!</p>
+
+<p>Replay:</p>
+
+<img src="{{{ replayImage }}}" />
+{{/winner}}
+{{^winner}}<p>It is {{ playerTurn }}'s turn. What is your next move?</p>
+
+{{#squares}}
+{{#.}}{{#link}}<a href="{{{ link }}}"><img src="/img/{{ fill }}.png"/></a>{{/link}}{{^link}}<img src="/img/{{ fill }}.png"/>{{/link}}{{/.}}
+<br />
+{{/squares}}
+{{/winner}}

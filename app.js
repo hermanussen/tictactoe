@@ -19,8 +19,8 @@ const winningLines = [
         [3, 5, 7]
     ];
 
-// Load template for rendering readme files
-const template = fs.readFileSync('readme.mustache', 'utf8');
+// Load template for rendering html files
+const template = fs.readFileSync('index.mustache', 'utf8');
 
 let determineWinner = function(game) {
     if(game.code.length < 3) {
@@ -68,8 +68,8 @@ let renderGameGif = function (game) {
     
     const encoder = new GIFEncoder(width, height);
 
-    // Ensure that the games directory exists
-    const gamePath = `games/${game.code.join('/')}`;
+    // Ensure that the dist directory exists
+    const gamePath = `dist/${game.code.join('/')}`;
     if (!fs.existsSync(gamePath)){
         fs.mkdirSync(gamePath, { recursive: true });
     }
@@ -162,10 +162,14 @@ const gamesDraw = gamesTotal - gamesWonX - gamesWonO;
 console.log(`Total games: ${gamesTotal}. Won by X: ${gamesWonX} (${Math.round(gamesWonX / gamesTotal * 100)}%). Won by O: ${gamesWonO} (${Math.round(gamesWonO / gamesTotal * 100)}%). Games drawn: ${gamesDraw} (${Math.round(gamesDraw / gamesTotal * 100)}%)`);
 
 for(let i = 0; i < gamesTotal; i++) {
-    if(i % 100 === 0) {
-        //console.log(`Rendering gif for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
+    if (i > 200)
+    {
+        break;
     }
-    //renderGameGif(games[i]);
+    if(i % 100 === 0) {
+        console.log(`Rendering gif for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
+    }
+    renderGameGif(games[i]);
 }
 
 const renderedReadmeCodes = [];
@@ -177,17 +181,18 @@ let renderReadme = function(game) {
         if(renderedReadmeCodes.filter(f => f === gameCode).length === 0) {
             renderedReadmeCodes.push(gameCode);
 
-            const readmePath = `games/${gameCodeArr.join('/')}`;
+            const readmePathRel = gameCodeArr.length > 0 ? `/${gameCodeArr.join('/')}` : '';
+            const readmePath = `dist${readmePathRel}`;
             if (!fs.existsSync(readmePath)){
                 fs.mkdirSync(readmePath, { recursive: true });
             }
 
-            let outputFileName = `${readmePath}/README.md`.replace('//', '/');
+            let outputFileName = `${readmePath}/index.html`.replace('//', '/');
 
             let squares = [
-                    [ { fill: '_', link: `/${readmePath}/1/README.md` }, { fill: '_', link: `/${readmePath}/2/README.md` }, { fill: '_', link: `/${readmePath}/3/README.md` } ],
-                    [ { fill: '_', link: `/${readmePath}/4/README.md` }, { fill: '_', link: `/${readmePath}/5/README.md` }, { fill: '_', link: `/${readmePath}/6/README.md` } ],
-                    [ { fill: '_', link: `/${readmePath}/7/README.md` }, { fill: '_', link: `/${readmePath}/8/README.md` }, { fill: '_', link: `/${readmePath}/9/README.md` } ]
+                    [ { fill: '_', link: `${readmePathRel}/1/index.html` }, { fill: '_', link: `${readmePathRel}/2/index.html` }, { fill: '_', link: `${readmePathRel}/3/index.html` } ],
+                    [ { fill: '_', link: `${readmePathRel}/4/index.html` }, { fill: '_', link: `${readmePathRel}/5/index.html` }, { fill: '_', link: `${readmePathRel}/6/index.html` } ],
+                    [ { fill: '_', link: `${readmePathRel}/7/index.html` }, { fill: '_', link: `${readmePathRel}/8/index.html` }, { fill: '_', link: `${readmePathRel}/9/index.html` } ]
                 ];
             for(let gc = 0; gc < gameCodeArr.length; gc++) {        
                 let dx = (gameCodeArr[gc] - 1) % 3;
@@ -218,7 +223,7 @@ let renderReadme = function(game) {
                 };
 
             if(model.winner) {
-                model.replayImage = `/games/${gameCodeArr.join('/')}/game.gif`;
+                model.replayImage = `/${gameCodeArr.join('/')}/game.gif`;
             }
 
             const rendered = mustache.render(template, model);
