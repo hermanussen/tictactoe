@@ -25,7 +25,7 @@ jobs:
       run: npm install
 
     - name: Run app
-      run: node app.js
+      run: node ./app.js
 
     - uses: lauchacarro/Azure-Storage-Action@master
       with:

@@ -8,8 +8,9 @@
 <li>{{ gamesWonOPerc }}% chance of O winning ({{ gamesWonO }} games)</li>
 <li>{{ gamesDrawPerc }}% chance of a draw ({{ gamesDraw }} games)</li>
 </ul>
-
-{{#winner}}<p>{{ winner }} won the game!</p>
+{{#winner}}
+{{#draw}}<p>It's a draw!</p>{{/draw}}
+{{^draw}}<p>{{ winner }} won the game!</p>{{/draw}}
 
 <p>Replay:</p>
 

@@ -1,6 +1,6 @@
 const GIFEncoder = require('gifencoder');
-const { createCanvas } = require('canvas');
-const fs = require('graceful-fs');
+const { registerFont, createCanvas } = require('canvas')
+const fs = require('fs');
 const mustache = require('mustache');
 const width = 100;
 const height = 100;
@@ -18,6 +18,15 @@ const winningLines = [
         [1, 5, 9],
         [3, 5, 7]
     ];
+
+// Copy images to dist folder
+const imgDistPath = 'dist/img';
+if (!fs.existsSync(imgDistPath)){
+    fs.mkdirSync(imgDistPath, { recursive: true });
+}
+fs.copyFile('img/_.png', 'dist/img/_.png', () => {});
+fs.copyFile('img/o.png', 'dist/img/o.png', () => {});
+fs.copyFile('img/x.png', 'dist/img/x.png', () => {});
 
 // Load template for rendering html files
 const template = fs.readFileSync('index.mustache', 'utf8');
@@ -75,9 +84,7 @@ let renderGameGif = function (game) {
     }
 
     let outputFileName = `${gamePath}/game.gif`;
-    let readStream = encoder.createReadStream();
-    let writeStream = fs.createWriteStream(outputFileName);
-    readStream.pipe(writeStream);
+    encoder.createReadStream().pipe(fs.createWriteStream(outputFileName));
 
     encoder.start();
     encoder.setRepeat(0);   // 0 for repeat, -1 for no-repeat
@@ -134,7 +141,8 @@ let renderGameGif = function (game) {
     ctx.fillRect(0, 0, width, height);
 
     // Draw who won
-    ctx.font = '22px Arial, Helvetica';
+    registerFont("TerminusBold.ttf", { family: 'Terminus' });
+    ctx.font = '22px Terminus';
     ctx.textAlign = "center";
     ctx.fillStyle = '#000000';
     if(typeof game.winner !== 'undefined') {
@@ -148,10 +156,6 @@ let renderGameGif = function (game) {
     encoder.addFrame(ctx);
 
     encoder.finish();
-    for(let rs in encoder.readStreams) {
-        rs.close();
-    }
-    writeStream.close();
 };
 
 const gamesTotal = games.length;
@@ -208,6 +212,7 @@ let renderReadme = function(game) {
             const gamesFromHereDraw = gamesFromHereTotal - gamesFromHereWonX - gamesFromHereWonO;
 
             const winner = j === game.code.length ? (gameCodeArr.length % 2 == 0 ? 'O' : 'X') : undefined;
+            const draw = gamesFromHereDraw > 0 ? 1 : 0;
 
             let model = {
                     gamesTotal: gamesFromHereTotal,
@@ -219,6 +224,7 @@ let renderReadme = function(game) {
                     gamesDrawPerc: Math.round(gamesFromHereDraw / gamesFromHereTotal * 100),
                     playerTurn: gameCodeArr.length % 2 == 0 ? 'X' : 'O',
                     winner: winner,
+                    draw: draw,
                     squares: squares
                 };
 
@@ -234,6 +240,10 @@ let renderReadme = function(game) {
 }
 
 for(let i = 0; i < gamesTotal; i++) {
+    if (i > 200)
+    {
+        break;
+    }
     if(i % 100 === 0) {
         console.log(`Rendering readme for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
     }
