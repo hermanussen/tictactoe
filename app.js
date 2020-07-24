@@ -166,10 +166,6 @@ const gamesDraw = gamesTotal - gamesWonX - gamesWonO;
 console.log(`Total games: ${gamesTotal}. Won by X: ${gamesWonX} (${Math.round(gamesWonX / gamesTotal * 100)}%). Won by O: ${gamesWonO} (${Math.round(gamesWonO / gamesTotal * 100)}%). Games drawn: ${gamesDraw} (${Math.round(gamesDraw / gamesTotal * 100)}%)`);
 
 for(let i = 0; i < gamesTotal; i++) {
-    if (i > 200)
-    {
-        break;
-    }
     if(i % 100 === 0) {
         console.log(`Rendering gif for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
     }
@@ -240,10 +236,6 @@ let renderReadme = function(game) {
 }
 
 for(let i = 0; i < gamesTotal; i++) {
-    if (i > 200)
-    {
-        break;
-    }
     if(i % 100 === 0) {
         console.log(`Rendering readme for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
     }
