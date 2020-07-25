@@ -76,8 +76,7 @@ let calculateNextMoves = function(game) {
 let game = { code: [], codeStr: '' };
 calculateNextMoves(game);
 
-let renderGameGif = function (game) {
-    
+let renderGameGif = async function (game) {
     const encoder = new GIFEncoder(width, height);
 
     // Ensure that the dist directory exists
@@ -167,12 +166,13 @@ const gamesDraw = gamesTotal - gamesWonX - gamesWonO;
 
 console.log(`Total games: ${gamesTotal}. Won by X: ${gamesWonX} (${Math.round(gamesWonX / gamesTotal * 100)}%). Won by O: ${gamesWonO} (${Math.round(gamesWonO / gamesTotal * 100)}%). Games drawn: ${gamesDraw} (${Math.round(gamesDraw / gamesTotal * 100)}%)`);
 
-for(let i = 0; i < gamesTotal; i++) {
-    if(i % 100 === 0) {
-        console.log(`Rendering gif for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
-    }
-    renderGameGif(games[i]);
+let renderGifs = async function(games) {
+    Promise.all(games.map((game) => renderGameGif(game)));
 }
+
+console.log("Rendering all gifs...");
+renderGifs(games); // .slice(0, 200)
+console.log("Finished rendering gifs...");
 
 const renderedReadmeCodes = [];
 
@@ -232,12 +232,17 @@ let renderReadme = function(game) {
 
             const rendered = mustache.render(template, model);
 
-            fs.writeFileSync(outputFileName, rendered);
+            fs.writeFile(outputFileName,
+                        rendered,
+                        (err) => {
+                            if (err) throw err;
+                        });
         }
     }
 }
 
 for(let i = 0; i < gamesTotal; i++) {
+    //if(i > 200) break;
     if(i % 100 === 0) {
         console.log(`Rendering readme for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
     }
