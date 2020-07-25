@@ -28,6 +28,9 @@ fs.copyFile('img/_.png', 'dist/img/_.png', () => {});
 fs.copyFile('img/o.png', 'dist/img/o.png', () => {});
 fs.copyFile('img/x.png', 'dist/img/x.png', () => {});
 
+// Ensure that the font is available
+registerFont("TerminusBold.ttf", { family: 'Terminus' });
+
 // Load template for rendering html files
 const template = fs.readFileSync('index.mustache', 'utf8');
 
@@ -141,7 +144,6 @@ let renderGameGif = function (game) {
     ctx.fillRect(0, 0, width, height);
 
     // Draw who won
-    registerFont("TerminusBold.ttf", { family: 'Terminus' });
     ctx.font = '22px Terminus';
     ctx.textAlign = "center";
     ctx.fillStyle = '#000000';
