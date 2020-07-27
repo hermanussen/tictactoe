@@ -27,10 +27,8 @@ jobs:
     - name: Run app
       run: node ./renderHtml.js
 
-    - uses: lauchacarro/Azure-Storage-Action@master
+    - uses: kheiakiyama/install-azcopy-action@v1
       with:
-        enabled-static-website: 'true'
-        folder: 'dist'
-        index-document: 'index.html'
-        error-document: '404.html'
-        connection-string: ${{ secrets.CONNECTION_STRING }}
+        version: 'v10'
+
+    - run: azcopy_v10 cp "./dist/" "${{ secrets.DEST }}" --recursive

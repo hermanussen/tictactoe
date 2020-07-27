@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('graceful-fs');
 const mustache = require('mustache');
 const calculateGames = require('./calculateGames');
 
@@ -74,11 +74,9 @@ let renderReadme = function(game) {
 
             const rendered = mustache.render(template, model);
 
-            fs.writeFile(outputFileName,
-                        rendered,
-                        (err) => {
-                            if (err) throw err;
-                        });
+            fs.writeFileSync(
+                outputFileName,
+                rendered);
         }
     }
 }
@@ -86,7 +84,7 @@ let renderReadme = function(game) {
 const gamesTotal = games.length;
 
 for(let i = 0; i < gamesTotal; i++) {
-    //if(i > 200) break;
+    if(i > 10000) break;
     if(i % 100 === 0) {
         console.log(`Rendering readme for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
     }
