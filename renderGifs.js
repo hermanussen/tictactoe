@@ -122,7 +122,7 @@ const gamesDraw = gamesTotal - gamesWonX - gamesWonO;
 console.log(`Total games: ${gamesTotal}. Won by X: ${gamesWonX} (${Math.round(gamesWonX / gamesTotal * 100)}%). Won by O: ${gamesWonO} (${Math.round(gamesWonO / gamesTotal * 100)}%). Games drawn: ${gamesDraw} (${Math.round(gamesDraw / gamesTotal * 100)}%)`);
 
 console.log("Rendering all gifs...");
-let gPromises = games.slice(0, 200).map((g) => renderGameGif(g)); // .slice(0, 200)
+let gPromises = games.map((g) => renderGameGif(g)); // .slice(0, 200)
 allProgress(
     gPromises,
     (p) => {
