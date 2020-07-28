@@ -18,6 +18,8 @@ const template = fs.readFileSync('index.mustache', 'utf8');
 
 const renderedReadmeCodes = [];
 
+const renderedInMemory = [];
+
 let renderReadme = function(game) {
     for(let j = 0; j <= game.code.length; j++) {
         let gameCodeArr = game.code.slice(0, j);
@@ -74,9 +76,10 @@ let renderReadme = function(game) {
 
             const rendered = mustache.render(template, model);
 
-            fs.writeFileSync(
-                outputFileName,
-                rendered);
+            renderedInMemory.push({
+                    fileName: outputFileName,
+                    html: rendered
+                });
         }
     }
 }
@@ -84,9 +87,18 @@ let renderReadme = function(game) {
 const gamesTotal = games.length;
 
 for(let i = 0; i < gamesTotal; i++) {
-    if(i > 10000) break;
+    //if(i > 10000) break;
     if(i % 100 === 0) {
         console.log(`Rendering readme for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
     }
     renderReadme(games[i]);
+}
+
+for(let i = 0; i < renderedInMemory.length; i++) {
+    if(i % 100 === 0) {
+        console.log(`Writing file for game ${i + 1} of ${renderedInMemory.length} (${Math.round(i / renderedInMemory.length * 100)}%)... ${renderedInMemory[i].fileName}`);
+    }
+    fs.writeFileSync(
+        renderedInMemory[i].fileName,
+        renderedInMemory[i].html);
 }
