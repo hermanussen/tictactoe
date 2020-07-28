@@ -1,5 +1,7 @@
 # Tic Tac Toe
 
+![renderHtml](https://github.com/hermanussen/tictactoe/workflows/renderHtml/badge.svg) ![renderGifs](https://github.com/hermanussen/tictactoe/workflows/renderGifs/badge.svg)
+
 ## What is it?
 
 - This is a node application that renders all possible games of Tic Tac Toe as static HTML pages, as well as a node application that renders animated gifs for all possible games.
