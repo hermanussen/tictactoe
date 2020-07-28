@@ -31,4 +31,4 @@ jobs:
       with:
         version: 'v10'
 
-    - run: cd dist && azcopy_v10 cp ./* "${{ secrets.DEST }}" --recursive
+    - run: cd dist && azcopy_v10 cp "./*" "${{ secrets.DEST }}" --recursive
