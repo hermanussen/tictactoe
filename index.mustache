@@ -1,25 +1,76 @@
-<h1>Tic Tac Toe</h1>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Tic Tac Toe</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+    </head>
+    <body>
+        <div class="container text-center">
+            <div class="row">
+                <h1>Tic Tac Toe</h1>
+            </div>
+            <div class="row">
+                <p>At this point in the game, there are {{ gamesTotal }} possible outcomes.</p>
+            </div>
+            <div class="row">
+                <div class="card" style="width: 30rem;">
+                    <p class="card-title">Of these outcomes, the following is true:</p>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ gamesWonXPerc }}%" aria-valuenow="{{ gamesWonXPerc }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                {{ gamesWonXPerc }}% chance of X winning ({{ gamesWonX }} games)
+                            </li>
+                            <li class="list-group-item">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ gamesWonOPerc }}%" aria-valuenow="{{ gamesWonOPerc }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                {{ gamesWonOPerc }}% chance of O winning ({{ gamesWonO }} games)
+                            </li>
+                            <li class="list-group-item">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ gamesDrawPerc }}%" aria-valuenow="{{ gamesDrawPerc }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                {{ gamesDrawPerc }}% chance of a draw ({{ gamesDraw }} games)
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {{#winner}}
+            <div class="row">
+                <div class="card mt-4" style="width: 30rem;">
+                    <p class="card-title">
+                        {{#draw}}It's a draw!{{/draw}}
+                        {{^draw}}{{ winner }} won the game!{{/draw}}
+                    </p>
+                    <p class="card-subtitle mb-2 text-muted">Replay:</p>
+                    <div class="card-body">
+                        <img src="{{{ replayImage }}}" alt="Game replay animated gif" />
+                    </div>
+                </div>
+            </div>
+            {{/winner}}
+            {{^winner}}
+            <div class="row">
+                <div class="card mt-4" style="width: 30rem;">
+                    <p class="card-title">It is {{ playerTurn }}'s turn. What is your next move?</p>
+                    <div class="card-body">
+                        {{#squares}}
+                        {{#.}}{{#link}}<a href="{{{ link }}}"><img src="/img/{{ fill }}.png"/></a>{{/link}}{{^link}}<img src="/img/{{ fill }}.png"/>{{/link}}{{/.}}
+                        <br />
+                        {{/squares}}
+                    </div>
+                </div>
+            </div>
+            {{/winner}}
+        </div>
+    </body>
+</html>
 
-<p>At this point in the game, there are {{ gamesTotal }} possible outcomes.</p>
 
-<p>Of these outcomes, the following is true:</p>
-<ul>
-<li>{{ gamesWonXPerc }}% chance of X winning ({{ gamesWonX }} games)</li>
-<li>{{ gamesWonOPerc }}% chance of O winning ({{ gamesWonO }} games)</li>
-<li>{{ gamesDrawPerc }}% chance of a draw ({{ gamesDraw }} games)</li>
-</ul>
-{{#winner}}
-{{#draw}}<p>It's a draw!</p>{{/draw}}
-{{^draw}}<p>{{ winner }} won the game!</p>{{/draw}}
-
-<p>Replay:</p>
-
-<img src="{{{ replayImage }}}" />
-{{/winner}}
-{{^winner}}<p>It is {{ playerTurn }}'s turn. What is your next move?</p>
-
-{{#squares}}
-{{#.}}{{#link}}<a href="{{{ link }}}"><img src="/img/{{ fill }}.png"/></a>{{/link}}{{^link}}<img src="/img/{{ fill }}.png"/>{{/link}}{{/.}}
-<br />
-{{/squares}}
-{{/winner}}

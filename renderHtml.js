@@ -36,9 +36,9 @@ let renderReadme = function(game) {
             let outputFileName = `${readmePath}/index.html`.replace('//', '/');
 
             let squares = [
-                    [ { fill: '_', link: `${readmePathRel}/1/index.html` }, { fill: '_', link: `${readmePathRel}/2/index.html` }, { fill: '_', link: `${readmePathRel}/3/index.html` } ],
-                    [ { fill: '_', link: `${readmePathRel}/4/index.html` }, { fill: '_', link: `${readmePathRel}/5/index.html` }, { fill: '_', link: `${readmePathRel}/6/index.html` } ],
-                    [ { fill: '_', link: `${readmePathRel}/7/index.html` }, { fill: '_', link: `${readmePathRel}/8/index.html` }, { fill: '_', link: `${readmePathRel}/9/index.html` } ]
+                    [ { fill: '_', link: `${readmePathRel}/1/` }, { fill: '_', link: `${readmePathRel}/2/` }, { fill: '_', link: `${readmePathRel}/3/` } ],
+                    [ { fill: '_', link: `${readmePathRel}/4/` }, { fill: '_', link: `${readmePathRel}/5/` }, { fill: '_', link: `${readmePathRel}/6/` } ],
+                    [ { fill: '_', link: `${readmePathRel}/7/` }, { fill: '_', link: `${readmePathRel}/8/` }, { fill: '_', link: `${readmePathRel}/9/` } ]
                 ];
             for(let gc = 0; gc < gameCodeArr.length; gc++) {        
                 let dx = (gameCodeArr[gc] - 1) % 3;
