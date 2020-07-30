@@ -16,6 +16,13 @@ GitHub actions are setup to run the node applications that render all the pages 
 
 I wanted to see how far I could take this and have a little fun with the technology (Node, GitHub actions, Azure, ...). You can see the result here: https://robinhstorage.z6.web.core.windows.net/
 
+## How can I set this up myself?
+
+Just fork the repo and add the following secrets to the configuration:
+
+- *DEST_BASE_URL* - Destination url to the Azure Blob storage. E.g.: `https://yourstorageaccountname.blob.core.windows.net/%60web` (%60 is a $ sign)
+- *SAS_TOKEN* - Shared access signature token for the storage account. More info: https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#sas-token
+
 ## Can I run this locally?
 
 Sure. Just run `node ./renderHtml.js` and `node ./renderGifs.js`. Or use the Docker setup by running `docker-compose up --build` (runs a nginx webserver with the result). Please note that it will take very long to run these applications.
