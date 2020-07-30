@@ -33,8 +33,6 @@ jobs:
 
     - run: |
        cd dist
-       azcopy_v10 cp "./index.html" "${{ secrets.DEST_BASE_URL }}${{ secrets.SAS_TOKEN }}" --recursive
-       azcopy_v10 cp "./img/*" "${{ secrets.DEST_BASE_URL }}/img${{ secrets.SAS_TOKEN }}" --recursive
        azcopy_v10 cp "./1/*" "${{ secrets.DEST_BASE_URL }}/1${{ secrets.SAS_TOKEN }}" --recursive
        azcopy_v10 cp "./2/*" "${{ secrets.DEST_BASE_URL }}/2${{ secrets.SAS_TOKEN }}" --recursive
        azcopy_v10 cp "./3/*" "${{ secrets.DEST_BASE_URL }}/3${{ secrets.SAS_TOKEN }}" --recursive
