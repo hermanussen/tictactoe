@@ -139,14 +139,22 @@ const gamesDraw = gamesTotal - gamesWonX - gamesWonO;
 console.log(`Total games: ${gamesTotal}. Won by X: ${gamesWonX} (${Math.round(gamesWonX / gamesTotal * 100)}%). Won by O: ${gamesWonO} (${Math.round(gamesWonO / gamesTotal * 100)}%). Games drawn: ${gamesDraw} (${Math.round(gamesDraw / gamesTotal * 100)}%)`);
 
 console.log("Rendering all gifs...");
-let gPromises = games.map((g) => retryPromise(g)); // .slice(0, 200)
-allProgress(
-    gPromises,
-    (p) => {
-        if(p % 100 === 0) {
-            console.log(`${Math.floor(p)} of ${gPromises.length} (${Math.floor(p / gPromises.length * 100)}%) gif rendering finished`);
-        }
-    })
-    .then(() => {
-        console.log("Finished rendering gifs...");
-    });
+
+const chunkSize = 500;
+let gamesProcessed = 0;
+
+let renderChunk = function(games) {
+    let gamesChunk = games.splice(0, chunkSize);
+    let gPromises = gamesChunk.map((g) => retryPromise(g));
+    allProgress(
+        gPromises,
+        (p) => {
+            if(p > 0) gamesProcessed++;
+        })
+        .then(() => {
+            console.log(`Finished chunk. ${gamesProcessed} of ${gamesTotal} (${Math.round(gamesProcessed / gamesTotal * 100)}%) processed.`);
+            renderChunk(games);
+        });    
+}
+
+renderChunk(games);
