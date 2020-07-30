@@ -153,7 +153,9 @@ let renderChunk = function(games) {
         })
         .then(() => {
             console.log(`Finished chunk. ${gamesProcessed} of ${gamesTotal} (${Math.round(gamesProcessed / gamesTotal * 100)}%) processed.`);
-            renderChunk(games);
+            if(games.length > 0) {
+                renderChunk(games);
+            }
         });    
 }
 

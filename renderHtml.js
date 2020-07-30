@@ -88,15 +88,15 @@ const gamesTotal = games.length;
 
 for(let i = 0; i < gamesTotal; i++) {
     //if(i > 500) break;
-    if(i % 100 === 0) {
-        console.log(`Rendering readme for game ${i + 1} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
+    if(i % 500 === 0) {
+        console.log(`Rendering readme for game ${i} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
     }
     renderReadme(games[i]);
 }
 
 for(let i = 0; i < renderedInMemory.length; i++) {
-    if(i % 100 === 0) {
-        console.log(`Writing file for game ${i + 1} of ${renderedInMemory.length} (${Math.round(i / renderedInMemory.length * 100)}%)... ${renderedInMemory[i].fileName}`);
+    if(i % 500 === 0) {
+        console.log(`Writing file for game ${i} of ${renderedInMemory.length} (${Math.round(i / renderedInMemory.length * 100)}%)... ${renderedInMemory[i].fileName}`);
     }
     fs.writeFileSync(
         renderedInMemory[i].fileName,
