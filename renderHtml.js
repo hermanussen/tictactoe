@@ -87,7 +87,7 @@ let renderReadme = function(game) {
 const gamesTotal = games.length;
 
 for(let i = 0; i < gamesTotal; i++) {
-    if(i > 600) break;
+    //if(i > 600) break;
     if(i % 500 === 0) {
         console.log(`Rendering readme for game ${i} of ${gamesTotal} (${Math.round(i / gamesTotal * 100)}%)... ${games[i].codeStr}`);
     }
