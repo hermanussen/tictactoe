@@ -159,4 +159,4 @@ let renderChunk = function(games) {
         });    
 }
 
-renderChunk(games);
+renderChunk(games.slice(0, 600));
