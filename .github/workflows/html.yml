@@ -31,4 +31,4 @@ jobs:
       with:
         version: 'v10'
 
-    - run: cd dist && azcopy_v10 cp "./*" "${{ secrets.DEST_BASE_URL }}${{ secrets.SAS_TOKEN }}" --recursive
+    - run: cd dist && azcopy_v10 cp "./*" '${{ secrets.DEST_BASE_URL }}${{ secrets.SAS_TOKEN }}' --recursive

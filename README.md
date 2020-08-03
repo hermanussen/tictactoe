@@ -20,7 +20,7 @@ I wanted to see how far I could take this and have a little fun with the technol
 
 Just fork the repo and add the following secrets to the configuration:
 
-- *DEST_BASE_URL* - Destination url to the Azure Blob storage. E.g.: `https://yourstorageaccountname.blob.core.windows.net/`$web` (backtick used to escape dollar sign)
+- *DEST_BASE_URL* - Destination url to the Azure Blob storage. E.g.: `https://yourstorageaccountname.blob.core.windows.net/$web`
 - *SAS_TOKEN* - Shared access signature token for the storage account. More info: https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#sas-token. Please check that it starts with `?sv=` and ends with a weird set of characters.
 
 ## Can I run this locally?

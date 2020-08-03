@@ -33,12 +33,12 @@ jobs:
 
     - run: |
        cd dist
-       azcopy_v10 cp "./1/*" "${{ secrets.DEST_BASE_URL }}/1${{ secrets.SAS_TOKEN }}" --recursive
-       azcopy_v10 cp "./2/*" "${{ secrets.DEST_BASE_URL }}/2${{ secrets.SAS_TOKEN }}" --recursive
-       azcopy_v10 cp "./3/*" "${{ secrets.DEST_BASE_URL }}/3${{ secrets.SAS_TOKEN }}" --recursive
-       azcopy_v10 cp "./4/*" "${{ secrets.DEST_BASE_URL }}/4${{ secrets.SAS_TOKEN }}" --recursive
-       azcopy_v10 cp "./5/*" "${{ secrets.DEST_BASE_URL }}/5${{ secrets.SAS_TOKEN }}" --recursive
-       azcopy_v10 cp "./6/*" "${{ secrets.DEST_BASE_URL }}/6${{ secrets.SAS_TOKEN }}" --recursive
-       azcopy_v10 cp "./7/*" "${{ secrets.DEST_BASE_URL }}/7${{ secrets.SAS_TOKEN }}" --recursive
-       azcopy_v10 cp "./8/*" "${{ secrets.DEST_BASE_URL }}/8${{ secrets.SAS_TOKEN }}" --recursive
-       azcopy_v10 cp "./9/*" "${{ secrets.DEST_BASE_URL }}/9${{ secrets.SAS_TOKEN }}" --recursive
+       azcopy_v10 cp "./1/*" '${{ secrets.DEST_BASE_URL }}/1${{ secrets.SAS_TOKEN }}' --recursive
+       azcopy_v10 cp "./2/*" '${{ secrets.DEST_BASE_URL }}/2${{ secrets.SAS_TOKEN }}' --recursive
+       azcopy_v10 cp "./3/*" '${{ secrets.DEST_BASE_URL }}/3${{ secrets.SAS_TOKEN }}' --recursive
+       azcopy_v10 cp "./4/*" '${{ secrets.DEST_BASE_URL }}/4${{ secrets.SAS_TOKEN }}' --recursive
+       azcopy_v10 cp "./5/*" '${{ secrets.DEST_BASE_URL }}/5${{ secrets.SAS_TOKEN }}' --recursive
+       azcopy_v10 cp "./6/*" '${{ secrets.DEST_BASE_URL }}/6${{ secrets.SAS_TOKEN }}' --recursive
+       azcopy_v10 cp "./7/*" '${{ secrets.DEST_BASE_URL }}/7${{ secrets.SAS_TOKEN }}' --recursive
+       azcopy_v10 cp "./8/*" '${{ secrets.DEST_BASE_URL }}/8${{ secrets.SAS_TOKEN }}' --recursive
+       azcopy_v10 cp "./9/*" '${{ secrets.DEST_BASE_URL }}/9${{ secrets.SAS_TOKEN }}' --recursive
