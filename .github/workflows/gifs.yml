@@ -42,3 +42,4 @@ jobs:
        azcopy_v10 cp "./7/*" '${{ secrets.DEST_BASE_URL }}/7${{ secrets.SAS_TOKEN }}' --recursive
        azcopy_v10 cp "./8/*" '${{ secrets.DEST_BASE_URL }}/8${{ secrets.SAS_TOKEN }}' --recursive
        azcopy_v10 cp "./9/*" '${{ secrets.DEST_BASE_URL }}/9${{ secrets.SAS_TOKEN }}' --recursive
+       azcopy_v10 cp "*.txt" '${{ secrets.DEST_BASE_URL }}${{ secrets.SAS_TOKEN }}' --recursive

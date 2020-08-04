@@ -7,6 +7,8 @@ const calculateGames = require('./calculateGames');
 
 let games = calculateGames.getGames();
 
+let fileWriteLogs = [];
+
 // Ensure that the font is available
 registerFont("TerminusBold.ttf", { family: 'Terminus' });
 
@@ -107,7 +109,7 @@ let renderGameGif = function(game) {
 
         encoder.finish();
 
-        //console.log(`Rendered gif for ${game.code.join('')}`);
+        fileWriteLogs.push(`Rendered gif for ${game.code.join('')}: ${outputFileName}`);
         resolve();
     });
 }
@@ -155,6 +157,8 @@ let renderChunk = function(games) {
             console.log(`Finished chunk. ${gamesProcessed} of ${gamesTotal} (${Math.round(gamesProcessed / gamesTotal * 100)}%) processed.`);
             if(games.length > 0) {
                 renderChunk(games);
+            } else {
+                fs.writeFileSync("dist/filewritelogs.txt", fileWriteLogs.join('\r\n'));
             }
         });    
 }
