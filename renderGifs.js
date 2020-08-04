@@ -1,9 +1,9 @@
 const GIFEncoder = require('gifencoder');
 const { registerFont, createCanvas } = require('canvas')
-const fs = require('fs');
 const width = 100;
 const height = 100;
 const calculateGames = require('./calculateGames');
+var fs = require('fs');
 
 let games = calculateGames.getGames();
 
@@ -156,9 +156,12 @@ let renderChunk = function(games) {
         .then(() => {
             console.log(`Finished chunk. ${gamesProcessed} of ${gamesTotal} (${Math.round(gamesProcessed / gamesTotal * 100)}%) processed.`);
             if(games.length > 0) {
+                fs = require('fs'); // require fs again, because it seems to require a reset every once in a while
                 renderChunk(games);
             } else {
+                console.log(`Now writing file write logs for ${fileWriteLogs.length} entries...`);
                 fs.writeFileSync("dist/filewritelogs.txt", fileWriteLogs.join('\r\n'));
+                console.log(`Finished writing file write logs`);
             }
         });    
 }
