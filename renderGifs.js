@@ -5,9 +5,22 @@ const height = 100;
 const calculateGames = require('./calculateGames');
 var fs = require('fs');
 
-let games = calculateGames.getGames();
+const showUsageAndExit = function() {
+        console.log("Usage: node ./renderGifs.js [start_index] [number_of_files]");
+        console.log("[start_index] = How many files to skip of the total amount of gifs to process");
+        console.log("[number_of_files] = How many files (maximum) to process during this run");
+        process.exit(-1);
+    };
+if(process.argv.length < 4) {
+    showUsageAndExit();
+}
 
-let fileWriteLogs = [];
+const argStartIndex = parseInt(process.argv[2]);
+const argNumberOfFiles = parseInt(process.argv[3]);
+
+let games = calculateGames.getGames().slice(argStartIndex, argStartIndex + argNumberOfFiles);
+
+let renderedGames = [];
 
 // Ensure that the font is available
 registerFont("TerminusBold.ttf", { family: 'Terminus' });
@@ -109,7 +122,7 @@ let renderGameGif = function(game) {
 
         encoder.finish();
 
-        fileWriteLogs.push(`Rendered gif for ${game.code.join('')}: ${outputFileName}`);
+        renderedGames.push(game.code.join(''));
         resolve();
     });
 }
@@ -159,9 +172,7 @@ let renderChunk = function(games) {
                 fs = require('fs'); // require fs again, because it seems to require a reset every once in a while
                 renderChunk(games);
             } else {
-                console.log(`Now writing file write logs for ${fileWriteLogs.length} entries...`);
-                fs.writeFileSync("dist/filewritelogs.txt", fileWriteLogs.join('\r\n'));
-                console.log(`Finished writing file write logs`);
+                console.log(`Rendered ${renderedGames.length} games: ${renderedGames.join(' ')}`);
             }
         });    
 }

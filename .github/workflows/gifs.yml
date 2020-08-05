@@ -25,13 +25,40 @@ jobs:
       run: npm install
 
     - name: Run app
-      run: node ./renderGifs.js
+      run: |
+       node ./renderGifs.js 0 10000
+       node ./renderGifs.js 10000 10000
+       node ./renderGifs.js 20000 10000
+       node ./renderGifs.js 30000 10000
+       node ./renderGifs.js 40000 10000
+       node ./renderGifs.js 50000 10000
+       node ./renderGifs.js 60000 10000
+       node ./renderGifs.js 70000 10000
+       node ./renderGifs.js 80000 10000
+       node ./renderGifs.js 90000 10000
+       node ./renderGifs.js 100000 10000
+       node ./renderGifs.js 110000 10000
+       node ./renderGifs.js 120000 10000
+       node ./renderGifs.js 130000 10000
+       node ./renderGifs.js 140000 10000
+       node ./renderGifs.js 150000 10000
+       node ./renderGifs.js 160000 10000
+       node ./renderGifs.js 170000 10000
+       node ./renderGifs.js 180000 10000
+       node ./renderGifs.js 190000 10000
+       node ./renderGifs.js 200000 10000
+       node ./renderGifs.js 210000 10000
+       node ./renderGifs.js 220000 10000
+       node ./renderGifs.js 230000 10000
+       node ./renderGifs.js 240000 10000
+       node ./renderGifs.js 250000 10000
 
     - uses: kheiakiyama/install-azcopy-action@v1
       with:
         version: 'v10'
 
-    - run: |
+    - name: Upload to Azure storage
+      run: |
        cd dist
        azcopy_v10 cp "./1/*" '${{ secrets.DEST_BASE_URL }}/1${{ secrets.SAS_TOKEN }}' --recursive
        azcopy_v10 cp "./2/*" '${{ secrets.DEST_BASE_URL }}/2${{ secrets.SAS_TOKEN }}' --recursive
@@ -42,4 +69,3 @@ jobs:
        azcopy_v10 cp "./7/*" '${{ secrets.DEST_BASE_URL }}/7${{ secrets.SAS_TOKEN }}' --recursive
        azcopy_v10 cp "./8/*" '${{ secrets.DEST_BASE_URL }}/8${{ secrets.SAS_TOKEN }}' --recursive
        azcopy_v10 cp "./9/*" '${{ secrets.DEST_BASE_URL }}/9${{ secrets.SAS_TOKEN }}' --recursive
-       azcopy_v10 cp "*.txt" '${{ secrets.DEST_BASE_URL }}${{ secrets.SAS_TOKEN }}' --recursive
